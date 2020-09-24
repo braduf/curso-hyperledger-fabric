@@ -1,14 +1,10 @@
 # Org4 Channel update commands: part 1
 
-## Create pki, certs and msp of Org4
-
-```shell
-cd scripts && /org4-certs-up.sh
-```
+## Create and add msp of Org4
 
 ## Update configtx.yaml
 
-Add Org4 to organizations without ordererEndpoints
+Org4 to organizations without ordererEndpoints
 Add consenter to raft cluster
 Add to system channel orgs
 Add to consortium orgs
