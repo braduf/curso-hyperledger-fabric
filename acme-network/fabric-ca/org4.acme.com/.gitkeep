@@ -1,0 +1,5 @@
+orderers/orderer.org4.acme.com/msp
+orderers/orderer.org4.acme.com/tls
+peers/peer0.org4.acme.com/msp
+peers/peer0.org4.acme.com/tls
+users/

@@ -1,0 +1,33 @@
+# Copyright Bram Dufour. All Rights Reserved.
+# Autor: Bram Dufour, bram.dufour8@gmail.com
+# Date: 23-08-2020
+# SPDX-License-Identifier: Apache-2.0
+#
+version: "2"
+
+networks:
+  basic:
+services:
+  int.ca.org4.acme.com:
+    image: hyperledger/fabric-ca:$FABRIC_CA_IMAGE_TAG
+    container_name: int.ca.org4.acme.com
+    ports:
+      - "10056:7054"
+    volumes:
+      - ./fabric-ca/org4.acme.com/int:/etc/hyperledger/fabric-ca-server
+    command: >
+      sh -c "fabric-ca-server start -b admin:adminpw -u http://int.ca.org4.acme.com:password@root.ca.org4.acme.com:7054"
+    networks:
+      - basic
+
+  tls.int.ca.org4.acme.com:
+    image: hyperledger/fabric-ca:$FABRIC_CA_IMAGE_TAG
+    container_name: tls.int.ca.org4.acme.com
+    ports:
+      - "10057:7054"
+    volumes:
+      - ./fabric-ca/org4.acme.com/tls-int:/etc/hyperledger/fabric-ca-server
+    command: >
+      sh -c "fabric-ca-server start -b admin:adminpw -u http://tls.int.ca.org4.acme.com:password@tls.root.ca.org4.acme.com:7054"
+    networks:
+      - basic

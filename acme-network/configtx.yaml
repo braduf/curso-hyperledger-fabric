@@ -104,6 +104,32 @@ Organizations:
         OrdererEndpoints:
             - orderer.org3.acme.com:7050
 
+    #- &Org4
+    #    Name: Org4MSP
+    #    ID: Org4MSP
+    #    MSPDir: fabric-ca/org4.acme.com/msp
+    #    Policies:
+    #        Readers:
+    #            Type: Signature
+    #            Rule: "OR('Org4MSP.admin', 'Org4MSP.peer', 'Org4MSP.client', 'Org4MSP.orderer')"
+    #        Writers:
+    #            Type: Signature
+    #            Rule: "OR('Org4MSP.admin', 'Org4MSP.client', 'Org4MSP.orderer')"
+    #        Admins:
+    #            Type: Signature
+    #            Rule: "OR('Org4MSP.admin')"
+    #        Orderers:
+    #            Type: Signature
+    #            Rule: "OR('Org4MSP.orderer')"
+    #        Endorsement:
+    #            Type: Signature
+    #            Rule: "OR('Org4MSP.peer')"
+    #    AnchorPeers:
+    #        - Host: peer0.org4.acme.com
+    #          Port: 7051
+    #    #OrdererEndpoints:
+    #    #    - orderer.org4.acme.com:7050
+
 ################################################################################
 #   SECTION: Capabilities
 ################################################################################
@@ -170,6 +196,10 @@ Orderer: &OrdererDefaults
           Port: 7050
           ClientTLSCert: fabric-ca/org3.acme.com/orderers/orderer.org3.acme.com/tls/server.crt
           ServerTLSCert: fabric-ca/org3.acme.com/orderers/orderer.org3.acme.com/tls/server.crt
+        #- Host: orderer.org4.acme.com
+        #  Port: 7050
+        #  ClientTLSCert: fabric-ca/org4.acme.com/orderers/orderer.org4.acme.com/tls/server.crt
+        #  ServerTLSCert: fabric-ca/org4.acme.com/orderers/orderer.org4.acme.com/tls/server.crt
 
     Addresses:
         #- orderer.acme.com:7050
@@ -243,6 +273,7 @@ Profiles:
                 - *Org1
                 - *Org2
                 - *Org3
+                #- *Org4
             Capabilities:
                 <<: *OrdererCapabilities
         Consortiums:
@@ -251,6 +282,7 @@ Profiles:
                     - *Org1
                     - *Org2
                     - *Org3
+                    #- *Org4
     ThreeOrgsChannel:
         Consortium: SampleConsortium
         <<: *ChannelDefaults
