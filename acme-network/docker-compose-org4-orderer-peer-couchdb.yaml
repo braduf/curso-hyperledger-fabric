@@ -23,17 +23,18 @@ services:
   orderer.org4.acme.com:
     container_name: orderer.org4.acme.com
     extends:
-      file: orderer-base.yaml
+      file: base/orderer-base.yaml
       service: orderer-base
     environment:
       - ORDERER_GENERAL_LOCALMSPID=Org4MSP
     volumes:
-      - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-      - ../fabric-ca/org4.acme.com/orderers/orderer.org4.acme.com/msp:/var/hyperledger/orderer/msp
-      - ../fabric-ca/org4.acme.com/orderers/orderer.org4.acme.com/tls/:/var/hyperledger/orderer/tls
-      - ../fabric-ca/org4.acme.com/orderers/orderer.org4.acme.com/production:/var/hyperledger/production/orderer
+      - ./channel-artifacts/org4_genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ./org4.acme.com/orderers/orderer.org4.acme.com/msp:/var/hyperledger/orderer/msp
+      - ./org4.acme.com/orderers/orderer.org4.acme.com/tls:/var/hyperledger/orderer/tls
+      - ./org4.acme.com/orderers/orderer.org4.acme.com/production:/var/hyperledger/production/orderer
     ports:
       - 10050:7050
+      - 10443:8443
     networks:
       - basic
 
@@ -41,7 +42,7 @@ services:
     # ---CHANGED--- Container name – same as the peer name
     container_name: peer0.org4.acme.com
     extends:
-      file: peer-base.yaml
+      file: base/peer-base.yaml
       service: peer-base
     environment:
       # ---CHANGED--- changed to reflect peer name, org name and our company's domain
@@ -54,7 +55,7 @@ services:
       ##- CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.acme.com:7051
       - CORE_PEER_LOCALMSPID=Org4MSP
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb4:5987
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb4:5984
       - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
       - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
     depends_on:
@@ -62,10 +63,10 @@ services:
     volumes:
       - /var/run/:/host/var/run/
       # ---CHANGED--- changed to reflect peer name, org name and our company's domain
-      - ../fabric-ca/org4.acme.com/peers/peer0.org4.acme.com/msp:/etc/hyperledger/fabric/msp
+      - ./org4.acme.com/peers/peer0.org4.acme.com/msp:/etc/hyperledger/fabric/msp
       # ---CHANGED--- changed to reflect peer name, org name and our company's domain
-      - ../fabric-ca/org4.acme.com/peers/peer0.org4.acme.com/tls:/etc/hyperledger/fabric/tls
-      - ../fabric-ca/org4.acme.com/peers/peer0.org4.acme.com/production:/var/hyperledger/production
+      - ./org4.acme.com/peers/peer0.org4.acme.com/tls:/etc/hyperledger/fabric/tls
+      - ./org4.acme.com/peers/peer0.org4.acme.com/production:/var/hyperledger/production
     ports:
       - 10051:7051
     networks:

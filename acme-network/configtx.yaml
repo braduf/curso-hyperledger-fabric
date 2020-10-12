@@ -107,7 +107,7 @@ Organizations:
     #- &Org4
     #    Name: Org4MSP
     #    ID: Org4MSP
-    #    MSPDir: fabric-ca/org4.acme.com/msp
+    #    MSPDir: org4.acme.com/msp
     #    Policies:
     #        Readers:
     #            Type: Signature
@@ -127,7 +127,7 @@ Organizations:
     #    AnchorPeers:
     #        - Host: peer0.org4.acme.com
     #          Port: 7051
-    #    #OrdererEndpoints:
+    #    OrdererEndpoints:
     #    #    - orderer.org4.acme.com:7050
 
 ################################################################################
@@ -198,8 +198,8 @@ Orderer: &OrdererDefaults
           ServerTLSCert: fabric-ca/org3.acme.com/orderers/orderer.org3.acme.com/tls/server.crt
         #- Host: orderer.org4.acme.com
         #  Port: 7050
-        #  ClientTLSCert: fabric-ca/org4.acme.com/orderers/orderer.org4.acme.com/tls/server.crt
-        #  ServerTLSCert: fabric-ca/org4.acme.com/orderers/orderer.org4.acme.com/tls/server.crt
+        #  ClientTLSCert: org4.acme.com/orderers/orderer.org4.acme.com/tls/server.crt
+        #  ServerTLSCert: org4.acme.com/orderers/orderer.org4.acme.com/tls/server.crt
 
     Addresses:
         #- orderer.acme.com:7050

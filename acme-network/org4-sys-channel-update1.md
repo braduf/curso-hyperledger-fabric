@@ -4,13 +4,35 @@
 
 ## Update configtx.yaml
 
-Org4 to organizations without ordererEndpoints
-Add consenter to raft cluster
+Add Org4 to organizations without ordererEndpoints
 Add to system channel orgs
 Add to consortium orgs
 
+Then execute the shell commands
+
+Add consenter to raft cluster
+
 ```shell
-cd .. && export FABRIC_CFG_PATH=$PWD
+# fetch the latest config block to start the new orderer with
+peer channel fetch config channel-artifacts/org4_genesis.block -o $ORDERER_ADDRESS -c system-channel --tls --cafile $ORDERER_CA --clientauth --certfile $CLIENTAUTH_CERTFILE --keyfile $CLIENTAUTH_KEYFILE
+```
+
+Then execute the shell commands again
+
+Then add ordererEndpoints for org4 and execute the shell commands again, only signing the update with Org4 admin is enough now since it is an org update
+
+```shell
+export CORE_PEER_MSPCONFIGPATH=$(echo $PWD/org4.acme.com/users/admin@org4.acme.com/msp)
+export CLIENTAUTH_CERTFILE=$(echo $PWD/org4.acme.com/users/admin@org4.acme.com/tls/server.crt)
+export CLIENTAUTH_KEYFILE=$(echo $PWD/org4.acme.com/users/admin@org4.acme.com/tls/server.key)
+export CORE_PEER_LOCALMSPID=Org4MSP
+export ORDERER_CA=$(echo $PWD/org4.acme.com/orderers/orderer.org4.acme.com/tls/ca.crt)
+export ORDERER_ADDRESS=localhost:10050
+peer channel update -f channel-artifacts/update_in_envelope.pb -c system-channel -o $ORDERER_ADDRESS --tls --cafile $ORDERER_CA --clientauth --certfile $CLIENTAUTH_CERTFILE --keyfile $CLIENTAUTH_KEYFILE
+```
+
+```shell
+export FABRIC_CFG_PATH=$PWD
 export CORE_PEER_MSPCONFIGPATH=$(echo $PWD/fabric-ca/org1.acme.com/users/admin@org1.acme.com/msp)
 export CLIENTAUTH_CERTFILE=$(echo $PWD/fabric-ca/org1.acme.com/users/admin@org1.acme.com/tls/server.crt)
 export CLIENTAUTH_KEYFILE=$(echo $PWD/fabric-ca/org1.acme.com/users/admin@org1.acme.com/tls/server.key)
@@ -49,5 +71,15 @@ export CORE_PEER_MSPCONFIGPATH=$(echo $PWD/fabric-ca/org2.acme.com/users/admin@o
 export CLIENTAUTH_CERTFILE=$(echo $PWD/fabric-ca/org2.acme.com/users/admin@org2.acme.com/tls/server.crt)
 export CLIENTAUTH_KEYFILE=$(echo $PWD/fabric-ca/org2.acme.com/users/admin@org2.acme.com/tls/server.key)
 export CORE_PEER_LOCALMSPID=Org2MSP
+export ORDERER_CA=$(echo $PWD/fabric-ca/org2.acme.com/orderers/orderer.org2.acme.com/tls/ca.crt)
+export ORDERER_ADDRESS=localhost:8050
+peer channel signconfigtx -f channel-artifacts/update_in_envelope.pb
+# Change to Org3 to sign it (majority vote) and update the network
+export CORE_PEER_MSPCONFIGPATH=$(echo $PWD/fabric-ca/org3.acme.com/users/admin@org3.acme.com/msp)
+export CLIENTAUTH_CERTFILE=$(echo $PWD/fabric-ca/org3.acme.com/users/admin@org3.acme.com/tls/server.crt)
+export CLIENTAUTH_KEYFILE=$(echo $PWD/fabric-ca/org3.acme.com/users/admin@org3.acme.com/tls/server.key)
+export CORE_PEER_LOCALMSPID=Org3MSP
+export ORDERER_CA=$(echo $PWD/fabric-ca/org3.acme.com/orderers/orderer.org3.acme.com/tls/ca.crt)
+export ORDERER_ADDRESS=localhost:9050
 peer channel update -f channel-artifacts/update_in_envelope.pb -c system-channel -o $ORDERER_ADDRESS --tls --cafile $ORDERER_CA --clientauth --certfile $CLIENTAUTH_CERTFILE --keyfile $CLIENTAUTH_KEYFILE
 ```

@@ -1,4 +1,4 @@
-*.pem
-*.db
 *.tx
 *.block
+*.pb
+*.json
